@@ -15,7 +15,9 @@ const Login = () => {
           {/* Log in Form */}
           <div
             className={`w-1/2 flex flex-col justify-center items-center bg-white px-8 transition-all duration-700 ${
-              isSignInActive ? "opacity-100" : "opacity-0 translate-x-[100%]"
+              isSignInActive
+                ? "opacity-100 z-10 translate-x-0"
+                : "opacity-0 z-0 translate-x-[100%]"
             }`}
           >
             <h2 className="text-3xl font-bold mb-4">Log in</h2>
@@ -52,7 +54,9 @@ const Login = () => {
           {/* Sign Up Form */}
           <div
             className={`w-1/2 flex flex-col justify-center items-center bg-white px-8 transition-all duration-700 ${
-              !isSignInActive ? "opacity-100" : "opacity-0 translate-x-[-100%]"
+              !isSignInActive
+                ? "opacity-100 z-10 translate-x-0"
+                : "opacity-0 z-0 translate-x-[-100%]"
             }`}
           >
             <h2 className="text-3xl font-bold mb-4">Sign Up</h2>
