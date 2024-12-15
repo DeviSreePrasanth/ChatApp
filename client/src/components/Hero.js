@@ -8,7 +8,7 @@ const Home = () => {
   const navigate = useNavigate(); 
 
   const handleGetStarted = () => {
-    navigate('/'); 
+    navigate('/login'); 
   };
 
   const toggleTheme = () => {
