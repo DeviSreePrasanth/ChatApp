@@ -41,7 +41,7 @@ const Login = () => {
     try {
       const response = await axios.post("http://localhost:5000/api/auth", userData);
       console.log(response.data); // Handle successful response (like storing tokens)
-      navigate("/home");
+      navigate("/chat");
     } catch (error) {
       if (error.response) {
         if (error.response.data.message === "Invalid credentials") {
