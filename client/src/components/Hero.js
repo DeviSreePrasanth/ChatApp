@@ -40,7 +40,7 @@ const Home = () => {
       {/* Navbar */}
       <nav className={`flex justify-between items-center px-8 py-4 ${isDarkTheme ? 'bg-gradient-to-r from-gray-800 to-gray-900' : 'bg-gradient-to-r from-blue-600 to-green-400'} text-white shadow-lg animate-fade-in-down`}>
         <div className="font-bold text-2xl tracking-wide font-serif">Real Time chat application</div>
-        <ul className="flex space-x-8 text-xl">
+        <ul className="flex space-x-8 text-2xl">
           <li onClick={handleGetStarted} className="hover:scale-110 transform transition duration-300 cursor-pointer">Login</li>
           <li onClick={toggleTheme} className="cursor-pointer mt-1">
             {/* Icon for theme toggle */}
