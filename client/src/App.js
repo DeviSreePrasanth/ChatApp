@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Login';
 import Hero from './components/Hero';
 import ChatApp from './components/ChatApp';
+
 function App() {
   return (
     <Router>
