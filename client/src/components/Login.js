@@ -62,19 +62,26 @@ const Login = () => {
 
     try {
       const response = await axios.post("http://localhost:5000/api/auth", userData);
-      if (response.data.token) {
-        // Store the JWT token in localStorage (or sessionStorage)
-        localStorage.setItem("authToken", response.data.token);
 
-        // Redirect to a new page (e.g., /chat)
-        navigate("/chat");
-
+      if (response.status === 200 && response.data.token) {
+        // Successful login or signup
         setAlertMessage(isSignInActive ? "Login successful!" : "Signup successful!");
         setAlertType("success");
         setShowAlert(true);
+
+        // Store the JWT token in localStorage (or sessionStorage)
+        localStorage.setItem("authToken", response.data.token);
+
+        // Navigate only if login/signup is successful
+        setTimeout(() => navigate("/chat"), 1500); // Delay for user to see the success message
+      } else {
+        // Handle unsuccessful login or signup
+        setAlertMessage(response.data.message || "Invalid credentials.");
+        setAlertType("error");
+        setShowAlert(true);
       }
     } catch (error) {
-      setAlertMessage("Invalid Details");
+      setAlertMessage("Error: Unable to connect to the server.");
       setAlertType("error");
       setShowAlert(true);
       console.error(error);

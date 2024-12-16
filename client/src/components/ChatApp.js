@@ -1,28 +1,39 @@
 import React, { useState } from "react";
-import Sidebar from "./Sidebar"; // Sidebar Component
-import ChatList from "./ChatList"; // ChatList Component
-import ChatSection from "./ChatSection"; // ChatSection Component
+import { useNavigate } from "react-router-dom";
+import Sidebar from "./Sidebar";
+import ChatList from "./ChatList";
+import ChatSection from "./ChatSection";
+import UserProfile from "./UserProfile";
 
 const ChatApp = () => {
-  const [selectedChat, setSelectedChat] = useState(null);
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // State for Sidebar visibility on mobile
+  const [selectedChat, setSelectedChat] = useState(null); // Selected chat state
+  const [activeSection, setActiveSection] = useState("Chat"); // Track active section: "Chat", "UserProfile", "Logout"
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false); // Sidebar visibility for mobile
+  const navigate = useNavigate(); // For navigation on Logout
 
   // Handles chat selection
   const handleChatSelect = (chat) => {
     setSelectedChat(chat);
   };
 
-  // Handles the back action from the selected chat to the chat list
+  // Handles back to the chat list
   const handleBackToChatList = () => {
     setSelectedChat(null);
   };
 
-  // Toggles the sidebar visibility on mobile
+  // Sidebar section change handler
+  const handleSectionChange = (section) => {
+    setActiveSection(section);
+    setIsSidebarVisible(false); // Close sidebar on mobile when a section is selected
+    if (section === "Logout") navigate("/login"); // Navigate to Login if Logout is clicked
+  };
+
+  // Toggle sidebar visibility on mobile
   const toggleSidebar = () => {
     setIsSidebarVisible(!isSidebarVisible);
   };
 
-  // Closes the sidebar
+  // Close sidebar
   const closeSidebar = () => {
     setIsSidebarVisible(false);
   };
@@ -39,39 +50,55 @@ const ChatApp = () => {
 
       {/* Sidebar */}
       {isSidebarVisible && (
-        <div className="lg:hidden fixed top-0 left-0 right-0 z-30 bg-white shadow-md h-auto p-4 transition-transform duration-300">
-          <Sidebar closeSidebar={closeSidebar} />
+        <div className="lg:hidden fixed top-0 left-0 right-0 z-30 bg-white shadow-md h-auto p-4">
+          <Sidebar closeSidebar={closeSidebar} onSectionChange={handleSectionChange} />
         </div>
       )}
 
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block fixed top-0 left-0 z-10 w-full lg:w-20 bg-white shadow-md lg:static">
-        <Sidebar />
+      <div className="hidden lg:block w-full lg:w-20 bg-white shadow-md">
+        <Sidebar onSectionChange={handleSectionChange} />
       </div>
 
-      {/* Main Content */}
+      {/* Main Content Area */}
       <div className="flex-1 flex flex-col lg:flex-row pt-16 lg:pt-0 lg:pl-15">
-        {/* Chat List */}
-        <div
-          className={`${
-            selectedChat ? "hidden lg:block" : "block"
-          } w-full lg:w-1/4 bg-white shadow-md overflow-y-auto`}
-        >
-          <ChatList onChatSelect={handleChatSelect} />
-        </div>
+        {activeSection === "Chat" && (
+          <>
+            {/* Chat List */}
+            <div
+              className={`${
+                selectedChat ? "hidden lg:block" : "block"
+              } w-full lg:w-1/4 bg-white shadow-md overflow-y-auto`}
+            >
+              <ChatList onChatSelect={handleChatSelect} />
+            </div>
 
-        {/* Chat Section */}
-        <div
-          className={`${
-            selectedChat ? "fixed inset-0 z-20 bg-white lg:static lg:block" : "hidden lg:block"
-          } w-full lg:w-3/4 shadow-md overflow-y-auto`}
-        >
-          {selectedChat ? (
-            <ChatSection selectedChat={selectedChat} onBack={handleBackToChatList} />
-          ) : (
-            <div className="p-4 hidden lg:block">Select a chat to start</div>
-          )}
-        </div>
+            {/* Chat Section */}
+            <div
+              className={`${
+                selectedChat
+                  ? "fixed inset-0 z-20 bg-white lg:static lg:block"
+                  : "hidden lg:block"
+              } w-full lg:w-3/4 shadow-md overflow-y-auto`}
+            >
+              {selectedChat ? (
+                <ChatSection
+                  selectedChat={selectedChat}
+                  onBack={handleBackToChatList}
+                />
+              ) : (
+                <div className="p-4 hidden lg:block">Select a chat to start</div>
+              )}
+            </div>
+          </>
+        )}
+
+        {/* UserProfile Section */}
+        {activeSection === "UserProfile" && (
+          <div className="flex-1 bg-white p-4">
+            <UserProfile />
+          </div>
+        )}
       </div>
     </div>
   );
