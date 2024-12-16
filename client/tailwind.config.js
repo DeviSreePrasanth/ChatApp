@@ -1,9 +1,9 @@
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}", // Add paths to all your components
   ],
   theme: {
     extend: {},
   },
-  plugins: [],
+  darkMode: "class", // Enable dark mode
 };
